@@ -140,6 +140,10 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
 #modal-save{background:var(--red);color:#fff;border:none;padding:7px 20px;font-family:'IM Fell English',serif;font-size:.95rem;border-radius:3px;cursor:pointer;transition:background .2s;margin-top:10px}
 #modal-save:hover{background:#a00}
 
+/* ── BINDING VOWS ── */
+.vow-block{border:1px solid var(--border);border-radius:3px;padding:10px;margin-bottom:10px;background:var(--parch2)}
+.vow-block .vow-name{font-weight:600;font-size:.88rem;margin-bottom:4px}
+
 /* ── GRIDS ── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
@@ -147,10 +151,6 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
 /* ── INV ITEMS ── */
 .inv-item{display:flex;align-items:center;gap:7px;margin-bottom:6px}
 .inv-icon{color:#999;font-size:.8rem;flex-shrink:0}
-
-/* ── BINDING VOWS ── */
-.vow-block{border:1px solid var(--border);border-radius:3px;padding:10px;margin-bottom:10px;background:var(--parch2)}
-.vow-block .vow-name{font-weight:600;font-size:.88rem;margin-bottom:4px}
 
 /* ── DIVIDER ── */
 .div{text-align:center;color:var(--bdark);margin:12px 0;letter-spacing:.3em;font-size:.75rem}
@@ -205,6 +205,7 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
   <button class="snav" onclick="goToPage(8)"><span class="num">9</span>Binding Vows</button>
 </div>
 
+<!-- MODAL OVERLAY RESTORED -->
 <div id="modal-overlay">
   <div id="modal">
     <button id="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -213,7 +214,7 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
     <div class="field-row"><label>Description / Effet</label><textarea id="modal-desc" placeholder="Décris l'effet, les conditions, les dés…" rows="5"></textarea></div>
     <div class="field-row"><label>Coût CE (si applicable)</label><input type="text" id="modal-cost" placeholder="ex: 2 CE, N/A…"></div>
     <div class="field-row"><label>Notes / Conditions</label><textarea id="modal-notes" placeholder="Conditions spéciales, durée, cooldown…" rows="3"></textarea></div>
-    <button id="modal-save" onclick="saveModal()"><i class="fa-solid fa-floppy-disk"></i> Sauvegarder</button>
+    <button id="modal-save" onclick="closeModal()"><i class="fa-solid fa-floppy-disk"></i> Fermer</button>
   </div>
 </div>
 
@@ -222,7 +223,6 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
 <div class="page active" id="page-0">
   <div class="card">
     <h2 class="ptitle" contenteditable="true" id="T-s1">Identité & Caractéristiques</h2>
-
     <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px">
       <div class="portrait"><i class="fa-solid fa-user-ninja"></i></div>
       <div style="flex:1;min-width:190px">
@@ -234,7 +234,6 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
         <div class="field-row"><span class="flabel" contenteditable="true" id="L-spd">Move Speed</span><input type="text" id="P-spd" value="55 ft." style="width:70px;flex:none"></div>
       </div>
     </div>
-
     <div class="stat-bar">
       <div class="stat-box" style="background:#fde8e8;border-color:#c44">
         <span class="sn" contenteditable="true" id="T-hp">HP</span>
@@ -261,7 +260,7 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
       <div class="ms-box"><span class="sn" contenteditable="true" id="MS-l4">Intelligence</span><input type="number" id="MS-v4" value="2"></div>
       <div class="ms-box"><span class="sn" contenteditable="true" id="MS-l5">Coop</span><input type="number" id="MS-v5" value="1"></div>
     </div>
-
+    
     <div class="div">— ◆ —</div>
 
     <div class="substats-wrap">
@@ -323,7 +322,6 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
   <div class="card">
     <h2 class="ptitle" contenteditable="true" id="T-xp-title">XP Abilities (19 XP)</h2>
     <div class="skill-list" id="xp-list"></div>
-    <button class="add-btn" onclick="addSkill('xp')"><i class="fa-solid fa-plus"></i> Ajouter une aptitude</button>
   </div>
 </div>
 
@@ -336,7 +334,6 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
     </div>
     <div class="stitle2">Skills débloqués</div>
     <div class="skill-list" id="js-list"></div>
-    <button class="add-btn" onclick="addSkill('js')"><i class="fa-solid fa-plus"></i> Ajouter un skill</button>
   </div>
 </div>
 
@@ -369,8 +366,14 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
       <span>Cooldown</span>
       <span></span>
     </div>
-    <div id="ma-list"></div>
-    <button class="add-btn" onclick="addMA()"><i class="fa-solid fa-plus"></i> Ajouter une attaque</button>
+    <div id="ma-list">
+        <div class="ma-row"><input type="text" value="Punch"><input type="text" value="5d4+5"><input type="text" value="N/A"></div>
+        <div class="ma-row"><input type="text" value="Kick"><input type="text" value="5d4+5"><input type="text" value="N/A"></div>
+        <div class="ma-row"><input type="text" value="Hammer Strike"><input type="text" value="3d6+12"><input type="text" value="N/A"></div>
+        <div class="ma-row"><input type="text" value="Flurry of Blows"><input type="text" value="5d6+5"><input type="text" value="1 round"></div>
+        <div class="ma-row"><input type="text" value="Roundhouse Kick"><input type="text" value="5d6+5"><input type="text" value="1 round"></div>
+        <div class="ma-row"><input type="text" value="Artery Nick (Art)"><input type="text" value="Bleed DC 15"><input type="text" value="2 uses"></div>
+    </div>
   </div>
 </div>
 
@@ -438,50 +441,46 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
 <div class="page" id="page-8">
   <div class="card">
     <h2 class="ptitle">Binding Vows</h2>
-    <div id="vows-list"></div>
-    <button class="add-btn" onclick="addVow()"><i class="fa-solid fa-plus"></i> Ajouter un Vœu</button>
+    <div id="vows-list">
+        <div class="vow-block">
+            <div class="vow-name">Revealing the Hand</div>
+            <p style="font-size:.8rem">Explain ability to opponent: +10 Temp CE.</p>
+        </div>
+    </div>
   </div>
 </div>
 
-</div><div id="save-ind">Auto-save active</div>
+</div>
 
+<!-- SCRIPT LOGIC FOR MODAL AND DATA FETCH -->
 <script>
-const STORE = 'jjk_v7_cap_';
 let currentPage = 0;
-let modalTarget = null;
 
+// WORD-FOR-WORD TEXT FROM "Jujutsu Kaisen TTRPG.pdf" 
 const DEFAULT_XP = [
-  {name:'Technical Genius (5 XP)', desc:'Tactical pool = stat total. Reduce dmg, buff dmg or cost.', cost:'5'},
-  {name:'Next Level (5 XP)', desc:'Permanent +20 HP and +20 CE.', cost:'5'},
-  {name:'Bullet Time (4 XP)', desc:'Double the result of your block/dodge roll.', cost:'4'},
-  {name:'In The Zone (3 XP)', desc:'Decreases Black Flash Range by 2.', cost:'3'},
-  {name:'Aggressive (2 XP)', desc:'Move 20ft towards attacker if hit.', cost:'2'}
+  {name:'Technical Genius (5 XP)', desc:'Gain access to a pool of points equal to your stat total. These points refresh between each combat encounter, and can be used to reduce incoming damage, increase the damage of one of your attacks, or reduce the CE cost of a move. The added damage comes after any damage multipliers, but before a failed dodge.', cost:'5 CE'},
+  {name:'Next Level (5 XP)', desc:'Gain +20 permanent max HP and CE.', cost:'5 CE'},
+  {name:'Bullet Time (4 XP)', desc:'Once per day, gain the ability to multiply a roll to block/dodge by 2. Additional stacks give additional uses.', cost:'4 CE'},
+  {name:'In The Zone (3 XP)', desc:'Once per day, a sorcerer decreases their Black Flash Range by 2. This skill must be used before the talent roll to activate. (Can be “learned” twice and stacked with itself for a potential -4).', cost:'3 CE'},
+  {name:'Aggressive (2 XP)', desc:'As a free reaction, when you get hit by an enemy attack, you may move 20 ft (doesn’t take up movement speed) towards the attacker if possible. More stacks add +5 ft to the movement amount. (1/Round)', cost:'2 CE'}
 ];
 
 const DEFAULT_JS = [
-  {name:'[R1] Reverse Cursed Technique', desc:'Heals 1d10 + (TLx2).'},
-  {name:'[R1] Simple Domain', desc:'Negates domain sure-hit effects.'},
-  {name:'[R4] CE Imbue', desc:'Flow CE into objects/body (1d4 base).'},
-  {name:'[R4] CE Reinforcement', desc:'Defensive coating to reduce dmg.'},
-  {name:'Improved RCT (R2)', desc:'Adds +1d10 to RCT healing.'},
-  {name:'CE Imbue Increase (R2)', desc:'Imbue lvl up (+1d4+2).'},
-  {name:'CE Imbue Increase (R3)', desc:'Imbue max lvl (2d4).'},
-  {name:'Cursed Tool Proficiency (R3)', desc:'+2 dmg with tools.'},
-  {name:'Cursed Refinement (R2)', desc:'Reduce CE costs by 2 (min 1).'},
-  {name:'Weapon Specialist (R2)', desc:'+1 use of all weapon arts.'},
-  {name:'CE Control Increase (R3)', desc:'+1 to Talent and hit rolls.'},
-  {name:'Skyfall (R2)', desc:'Black Flash target = Prey (+1d10 dmg).'}
+  {name:'[R1] Reverse Cursed Technique', desc:'Must NOT have unlocked Sila’s Resilience. The sorcerer learns the Reverse Cursed Technique skill. To use RCT to heal yourself, a sorcerer must pass a talent check (DC TLx3), and if successful the RCT heals 1d10+(TLx2).', cost:'10 CE'},
+  {name:'[R1] Simple Domain', desc:'The sorcerer learns to use Simple Domain. When using a simple domain, it negates the sure hit effect of the domain for anyone inside its set distance. The amount of turns you are immune to is decided by a (1d4+ TL- (opponents TL)) roll of the simple domain user minus the technique of the domain caster. RANGE: 10 ft in all directions.', cost:'5 CE (DC: TLx2+2)'},
+  {name:'[R4] CE Imbue', desc:'A sorcerer can imbue CE into any object smaller than them that they touch... You have to do a talent check set by the DM to imbue the target first. An attack with a CE imbued object would add on your imbue level to the natural damage of the subject.', cost:'Free'},
+  {name:'[R4] CE Reinforcement', desc:'CE Coating is the defensive inverse of Imbue stacking as is a core defensive reaction. Having the same rules when it comes to it\'s DC, Stacking and cost but instead the biases can be output or imbue and the roll will subtract from incoming damage.', cost:'3 CE'},
+  {name:'Improved RCT (R2)', desc:'Must first have the RCT skill. Adds an extra d10 to an RCT roll (Can be learned 2 times).', cost:'N/A'},
+  {name:'CE Imbue Increase (R2)', desc:'The sorcerer levels up their cursed energy imbue output by one (can be learned 2 times).', cost:'N/A'},
+  {name:'CE Imbue Increase (R3)', desc:'The sorcerer levels up their cursed energy imbue output by one (can be learned 2 times). [Level 3 max]', cost:'N/A'},
+  {name:'Cursed Tool Proficiency (R3)', desc:'The sorcerer deals +2 extra damage when using cursed tools.', cost:'N/A'},
+  {name:'Cursed Refinement (R2)', desc:'All cursed energy consumption is reduced by 2, to a minimum of 1. (Only subtract this from the final cost of charge-up abilities like CE Blast)', cost:'N/A'},
+  {name:'Weapon Specialist (R2)', desc:'Choose one of the weapon-specific categories of weapon arts (Slash, Bludgeoning, Shot, Polearm). Gain an additional use of all of the weapon arts in that category.', cost:'N/A'},
+  {name:'CE Control Increase (R3)', desc:'The sorcerer gains +1 to all talent rolls as well as rolls to hit with their CT/CE Trait moves.', cost:'N/A'},
+  {name:'Skyfall (R2)', desc:'When landing a Black Flash on an enemy, the sorcerer can mark them as “Prey”. A creature marked in this way takes an extra d10 when receiving any Black Flash attacks from the sorcerer. There can be no more than 1 creature marked at any point. You can only choose to mark one target per day.', cost:'N/A'}
 ];
 
-const DEFAULT_MA = [
-  {name:'Punch',dmg:'5d4+5',cd:'N/A'},
-  {name:'Kick',dmg:'5d4+5',cd:'N/A'},
-  {name:'Hammer Strike',dmg:'3d6+12',cd:'N/A'},
-  {name:'Flurry of Blows',dmg:'5d6+5',cd:'1 round'},
-  {name:'Roundhouse Kick',dmg:'5d6+5',cd:'1 round'},
-  {name:'Artery Nick (Art)',dmg:'Bleed DC 15',cd:'2 uses'}
-];
-
+// MENU & TAB LOGIC
 function showPage(idx, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -490,46 +489,47 @@ function showPage(idx, btn) {
   currentPage = idx;
   window.scrollTo(0,0);
 }
-function goToPage(idx) { showPage(idx, document.querySelectorAll('.tab-btn')[idx]); toggleMenu(); }
-function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('soverlay').classList.toggle('open'); }
 
+function goToPage(idx) { 
+  showPage(idx, document.querySelectorAll('.tab-btn')[idx]); 
+  toggleMenu(); 
+}
+
+function toggleMenu() { 
+  document.getElementById('sidebar').classList.toggle('open'); 
+  document.getElementById('soverlay').classList.toggle('open'); 
+}
+
+// RENDERING SKILLS TO DOM
 function renderSkills(type) {
-  const arr = type==='xp'?DEFAULT_XP:DEFAULT_JS;
+  const arr = type === 'xp' ? DEFAULT_XP : DEFAULT_JS;
   const listEl = document.getElementById(type+'-list');
   listEl.innerHTML = '';
-  arr.forEach((sk,i) => {
-    const row = document.createElement('div'); row.className = 'skill-item';
-    row.innerHTML = `<input type="text" value="${sk.name}"> <button class="preview-btn" onclick="openModal('${type}',${i})">Aperçu</button>`;
+  arr.forEach((sk, i) => {
+    const row = document.createElement('div'); 
+    row.className = 'skill-item';
+    row.innerHTML = `<input type="text" value="${sk.name}"> <button class="preview-btn" onclick="openModal('${type}', ${i})">Aperçu</button>`;
     listEl.appendChild(row);
   });
 }
 
-function renderMA() {
-  const listEl = document.getElementById('ma-list');
-  listEl.innerHTML = '';
-  DEFAULT_MA.forEach((row, i) => {
-    const div = document.createElement('div'); div.className = 'ma-row';
-    div.innerHTML = `<input type="text" value="${row.name}"><input type="text" value="${row.dmg}"><input type="text" value="${row.cd}"><button class="del-btn"><i class="fa-solid fa-trash"></i></button>`;
-    listEl.appendChild(div);
-  });
-}
-
-function renderVows() {
-    const el = document.getElementById('vows-list');
-    el.innerHTML = `<div class="vow-block"><div class="vow-name">Revealing the Hand</div><p style="font-size:.8rem">Explain ability to opponent: +10 Temp CE.</p></div>`;
-}
-
+// MODAL POPUP LOGIC 
 function openModal(type, idx) {
-  const item = type==='xp'?DEFAULT_XP[idx]:DEFAULT_JS[idx];
+  const item = type === 'xp' ? DEFAULT_XP[idx] : DEFAULT_JS[idx];
   document.getElementById('modal-title').textContent = item.name;
   document.getElementById('modal-name').value = item.name;
   document.getElementById('modal-desc').value = item.desc;
+  document.getElementById('modal-cost').value = item.cost || "N/A";
   document.getElementById('modal-overlay').classList.add('open');
 }
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+function closeModal() { 
+  document.getElementById('modal-overlay').classList.remove('open'); 
+}
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderSkills('xp'); renderSkills('js'); renderMA(); renderVows();
+  renderSkills('xp'); 
+  renderSkills('js'); 
 });
 </script>
 </body>
