@@ -142,7 +142,9 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
 
 /* ── BINDING VOWS ── */
 .vow-block{border:1px solid var(--border);border-radius:3px;padding:10px;margin-bottom:10px;background:var(--parch2)}
-.vow-block .vow-name{font-weight:600;font-size:.88rem;margin-bottom:4px}
+.vow-block .vow-name{font-weight:600;font-size:.88rem;margin-bottom:4px; outline: none;}
+.vow-block .vow-name[contenteditable="true"]:focus { border-bottom: 1px dashed var(--red); }
+.vow-block p[contenteditable="true"]:focus { border-bottom: 1px dashed var(--red); outline: none; }
 
 /* ── GRIDS ── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -205,7 +207,7 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
   <button class="snav" onclick="goToPage(8)"><span class="num">9</span>Binding Vows</button>
 </div>
 
-<!-- MODAL OVERLAY RESTORED -->
+<!-- MODAL OVERLAY -->
 <div id="modal-overlay">
   <div id="modal">
     <button id="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -438,13 +440,28 @@ textarea{resize:vertical;min-height:44px;line-height:1.4}
   </div>
 </div>
 
+<!-- PAGE 8: EDITABLE BINDING VOWS -->
+<div class="page" id="page-8">
+  <div class="card">
+    <h2 class="ptitle">Binding Vows</h2>
+    <div id="vows-list">
+        <div class="vow-block">
+            <div class="vow-name" contenteditable="true">Revealing the Hand</div>
+            <p style="font-size:.8rem" contenteditable="true">Explain ability to opponent: +10 Temp CE.</p>
+        </div>
+    </div>
+    <!-- Add Vow Button -->
+    <button class="add-btn" onclick="addVow()"><i class="fa-solid fa-plus"></i> Ajouter un Vœu</button>
+  </div>
 </div>
 
-<!-- SCRIPT LOGIC FOR MODAL AND DATA FETCH -->
+</div>
+
+<!-- SCRIPT LOGIC -->
 <script>
 let currentPage = 0;
 
-// WORD-FOR-WORD TEXT FROM "Jujutsu Kaisen TTRPG.pdf" 
+// WORD-FOR-WORD TEXT FROM "Jujutsu Kaisen TTRPG.pdf"
 const DEFAULT_XP = [
   {name:'Technical Genius (5 XP)', desc:'Gain access to a pool of points equal to your stat total. These points refresh between each combat encounter, and can be used to reduce incoming damage, increase the damage of one of your attacks, or reduce the CE cost of a move. The added damage comes after any damage multipliers, but before a failed dodge.', cost:'5 CE'},
   {name:'Next Level (5 XP)', desc:'Gain +20 permanent max HP and CE.', cost:'5 CE'},
@@ -501,7 +518,7 @@ function renderSkills(type) {
   });
 }
 
-// MODAL POPUP LOGIC 
+// MODAL POPUP LOGIC
 function openModal(type, idx) {
   const item = type === 'xp' ? DEFAULT_XP[idx] : DEFAULT_JS[idx];
   document.getElementById('modal-title').textContent = item.name;
@@ -515,6 +532,19 @@ function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open'); 
 }
 
+// FUNCTION TO ADD NEW BINDING VOWS
+function addVow() {
+  const list = document.getElementById('vows-list');
+  const vow = document.createElement('div');
+  vow.className = 'vow-block';
+  vow.innerHTML = `
+    <div class="vow-name" contenteditable="true">Nouveau Vœu</div>
+    <p style="font-size:.8rem" contenteditable="true">Description et effets du vœu...</p>
+  `;
+  list.appendChild(vow);
+}
+
+// INITIALIZE PAGE
 window.addEventListener('DOMContentLoaded', () => {
   renderSkills('xp'); 
   renderSkills('js'); 
